@@ -1,114 +1,113 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Calculadora de Rede IP</title>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+<head>
+    <title>Calculadora IPv4</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="bg-gray-300">
-	<div class="grid grid-cols-1 lg:grid-cols-2">
-		<div class="bg-gray-900 lg:min-h-screen lg:flex lg:items-center p-8 sm:p-12">
-			<div class="flex-grow">
-				<h1 class="text-white text-center text-2xl sm:text-5xl mb-2"> Calculadora de Rede IP:</h1>
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+        <div class="bg-gray-900 lg:min-h-screen lg:flex lg:items-center p-8 sm:p-12">
+            <div class="flex-grow">
+                <h1 class="text-white text-center text-2xl sm:text-5xl mb-2"> Calculadora de Rede IP:</h1>
                 <br>
-				<li class="text-white text- text-2xl sm:text-3xl mb-2">Informe o endereço e mascara</li>
-			</div>
-		</div>
-		<div class="lg:min-h-screen lg:flex lg:items-center p-12 lg:p-24 xl:p-48">
-			<div class="flex-grow bg-white shadow-xl rounded-md border border-gray-300 p-8">
+                <li class="text-white text- text-2xl sm:text-3xl mb-2">Informe o endereço e mascara</li>
+            </div>
+        </div>
+        <div class="lg:min-h-screen lg:flex lg:items-center p-12 lg:p-24 xl:p-48">
+            <div class="flex-grow bg-white shadow-xl rounded-md border border-gray-300 p-8">
                 <form id="network-form">
-				<label class="font-bold text-gray-500" for="numero-inicial">Endereço IP:</label>
-				<div class="flex items-center grid">
-					<div class="relative">
-						<input type="text" id="ip-address" name="ip-address" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" title="Please enter a valid IP address (e.g. 192.168.0.1)" required class="h-14 pl-10 pr-20 rounded-lg z-0 focus:shadow focus:outline-none border bg-gray-50 w-full" placeholder="..." value="">
-					</div>
-				</div>
-				<label class="font-bold text-gray-500" for="numero-final">Bits da Máscara:</label>
-				<div class="flex items-center grid">
-					<div class="relative">
-						<input type="number" id="netmask-bits" name="netmask-bits" min="1" max="32" required class="h-14 pl-10 pr-20 rounded-lg z-0 focus:shadow focus:outline-none border bg-gray-50 w-full" placeholder="...">
-					</div>
-				</div>
-				
-				<div class="flex items-center grid p-8">
-					<div class="flex items-center">
-						<button type="submit" class="h-10 w-full text-white rounded-lg bg-gray-700 hover:bg-gray-800 btn" >Calcular</button>
-                        <button type="button" class="h-10 w-full text-white rounded-lg bg-red-700 hover:bg-gray-800 btn" id="clear-table">Limpar Tabela</button>
-					</div>
-				</div>
+                    <label class="font-bold text-gray-500" for="numero-inicial">Endereço IP:</label>
+                    <div class="flex items-center grid">
+                        <div class="relative">
+                            <input type="text" id="ip-address" name="ip-address"
+                                pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+                                title="Please enter a valid IP address (e.g. 192.168.0.1)" required
+                                class="h-14 pl-10 pr-20 rounded-lg z-0 focus:shadow focus:outline-none border bg-gray-50 w-full"
+                                placeholder="192.168.0.1" value="192.168.0.1">
+                        </div>
+                    </div>
+                    <label class="font-bold text-gray-500" for="numero-final">Bits da Máscara:</label>
+                    <div class="flex items-center grid">
+                        <div class="relative">
+                            <input type="number" id="netmask-bits" name="netmask-bits" min="1" max="32" required
+                                class="h-14 pl-10 pr-20 rounded-lg z-0 focus:shadow focus:outline-none border bg-gray-50 w-full"
+                                placeholder="24" value="24">
+                        </div>
+                    </div>
 
-            </form>
+                    <div class="flex items-center grid p-8">
+                        <div class="flex items-center">
+                            <button type="button"
+                                class="h-10 w-full text-white rounded-lg bg-gray-700 hover:bg-gray-800 btn"
+                                onclick="Calcular()">Calcular</button>
+                            <button type="button"
+                                class="h-10 w-full text-white rounded-lg bg-red-700 hover:bg-gray-800 btn"
+                                id="clear-table">Limpar Tabela</button>
+                        </div>
+                    </div>
 
-            <table id="network-table" class="border-collapse border border-slate-400 .">
-                <thead class="bg-gray-800 text-white">
-                  <tr>
-                    <th>Endereço de Rede</th>
-                    <th>Máscara de Rede</th>
-                    <th>Endereço de Broadcast</th>
-                    <th>Menor Endereço IP</th>
-                    <th>Maior Endereço IP</th>
-                    <th>Número de Hosts</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+                </form>
 
-			</div>
-		</div>
-	</div>
+                <table id="network-table" class="border-collapse border border-slate-400">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="border border-slate-400 px-4 py-2">Propriedade</th>
+                            <th class="border border-slate-400 px-4 py-2">Valor</th>
+                            <th class="border border-slate-400 px-4 py-2">Binário</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-400">
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Endereço de Rede</td>
+                            <td class="border border-slate-400 px-4 py-2" id="network-address"></td>
+                            <td class="border border-slate-400 px-4 py-2" id="network-address-binary"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Máscara de Rede</td>
+                            <td class="border border-slate-400 px-4 py-2" id="netmask"></td>
+                            <td class="border border-slate-400 px-4 py-2" id="netmask-binary"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Endereço de Broadcast</td>
+                            <td class="border border-slate-400 px-4 py-2" id="broadcast-address"></td>
+                            <td class="border border-slate-400 px-4 py-2" id="broadcast-address-binary"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Menor Endereço IP</td>
+                            <td class="border border-slate-400 px-4 py-2" id="min-host"></td>
+                            <td class="border border-slate-400 px-4 py-2" id="min-host-binary"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Maior Endereço IP</td>
+                            <td class="border border-slate-400 px-4 py-2" id="max-host"></td>
+                            <td class="border border-slate-400 px-4 py-2" id="max-host-binary"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-400 px-4 py-2">Número de Hosts</td>
+                            <td class="border border-slate-400 px-4 py-2" id="num-hosts"></td>
+                            <td class="border border-slate-400 px-4 py-2"></td>
+                        </tr>
+                    </tbody>
+                 </table>
+
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
-	<script>
-        const form = document.getElementById('network-form');
-        const tableBody = document.querySelector('#network-table tbody');
-        const clearButton = document.getElementById('clear-table');
+    <script>
 
-        form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const ipAddress = document.getElementById('ip-address').value;
-        const netmaskBits = parseInt(document.getElementById('netmask-bits').value);
-        const networkData = calculateNetworkData(ipAddress, netmaskBits);
-        addRowToTable(networkData);
-        });
 
-        clearButton.addEventListener('click', () => {
-        clearTable();
-        });
 
-        function addRowToTable(networkData) {
-        const { networkAddress, broadcastAddress, minIpAddress, maxIpAddress, numHosts, netmask } = networkData;
-        const newRow = tableBody.insertRow(0);
-        newRow.insertCell().textContent = networkAddress;
-        newRow.insertCell().textContent = netmask;
-        newRow.insertCell().textContent = broadcastAddress;
-        newRow.insertCell().textContent = minIpAddress;
-        newRow.insertCell().textContent = maxIpAddress;
-        newRow.insertCell().textContent = numHosts;
-        const rowIndex = tableBody.rows.length % 2;
-        newRow.classList.add(rowIndex === 0 ? 'even:bg-amber-100' : 'odd:bg-blue-100');
-        }
 
-        function clearTable() {
-        tableBody.innerHTML = '';
-        }
-
-        let clipboard = new ClipboardJS('.btn');
-
-        clipboard.on('success', function (e) {
-            //console.log(e);
-            alert('Copiado para área de transferência!');
-        });
-
-        clipboard.on('error', function (e) {
-            //console.log(e);
-        });
-
-	</script>
+    </script>
 </body>
 
 </html>
