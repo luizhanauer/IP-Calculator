@@ -1,7 +1,7 @@
-Calculadora IP
+Calculadora IPv4
 ======================
 
-Esta é uma simples calculadora de rede IP, que recebe um endereço IP e o número de bits da máscara de sub-rede como entrada e retorna vários dados sobre a rede, incluindo o endereço de rede, endereço de broadcast, endereço mínimo e máximo, número de hosts e a própria máscara de sub-rede.
+Esta é uma simples calculadora IPv4, que recebe um endereço IP e o número de bits da máscara de sub-rede como entrada e retorna vários dados sobre a rede, incluindo o endereço de rede, endereço de broadcast, endereço mínimo e máximo, número de hosts e a própria máscara de sub-rede.
 
 Como usar
 ---------
@@ -27,7 +27,7 @@ Esta calculadora foi criada com HTML, CSS e JavaScript puro.
 Instalação
 ----------
 
-Não é necessário instalação para usar esta calculadora IP. Basta baixar os arquivos e abri-los em seu navegador.
+Não é necessário instalação para usar esta calculadora IPv4. Basta baixar os arquivos e abri-los em seu navegador.
 
 Contribuição
 ------------
