@@ -1,4 +1,5 @@
 function Calcular() {
+
   const address = document.getElementById('ip-address').value;
   console.log('address: ' + address);
   const netmask = document.getElementById('netmask-bits').value;
@@ -19,22 +20,73 @@ function Calcular() {
   console.log('hosts: ' + hosts);
 
   // Preencher a tabela
-  document.getElementById('network-address').innerHTML = networkAddress;
-  document.getElementById('network-address-binary').innerHTML = ipToBinary(networkAddress);
+  document.getElementById('address').innerHTML = address;
+  document.getElementById('address-binary').innerHTML = ipToBinaryFormated(address);
+  document.getElementById('network').innerHTML = networkAddress+'/'+netmask;
+  document.getElementById('network-binary').innerHTML = ipToBinaryFormated(networkAddress);
   document.getElementById('netmask').innerHTML = netmaskAddress;
-  document.getElementById('netmask-binary').innerHTML = ipToBinary(netmaskAddress);
+  document.getElementById('netmask-binary').innerHTML = ipToBinaryFormated(netmaskAddress);
   document.getElementById('broadcast-address').innerHTML = broadcast;
-  document.getElementById('broadcast-address-binary').innerHTML = ipToBinary(broadcast);
+  document.getElementById('broadcast-address-binary').innerHTML = ipToBinaryFormated(broadcast);
   document.getElementById('min-host').innerHTML = calcMinHost;
-  document.getElementById('min-host-binary').innerHTML = ipToBinary(calcMinHost);
+  document.getElementById('min-host-binary').innerHTML = ipToBinaryFormated(calcMinHost);
   document.getElementById('max-host').innerHTML = calcMaxHost;
-  document.getElementById('max-host-binary').innerHTML = ipToBinary(calcMaxHost);
+  document.getElementById('max-host-binary').innerHTML = ipToBinaryFormated(calcMaxHost);
   document.getElementById('num-hosts').innerHTML = hosts;
+
+  // obter a tabela e as seções do cabeçalho e do corpo
+  const table = document.getElementById('results-table');
+  const tbody = table.getElementsByTagName('tbody')[0];
+  const thead = table.getElementsByTagName('thead')[0];
+
+  // criar nova linha no corpo da tabela
+  const newRow = tbody.insertRow(0);
+
+  // preencher nova linha com resultados
+  newRow.insertCell().innerHTML = address;
+  newRow.insertCell().innerHTML = netmaskAddress;
+  newRow.insertCell().innerHTML = networkAddress+'/'+netmask;
+  newRow.insertCell().innerHTML = broadcast;
+  newRow.insertCell().innerHTML = calcMinHost;
+  newRow.insertCell().innerHTML = calcMaxHost;
+  newRow.insertCell().innerHTML = hosts;
+
+  // mover o thead para o topo da tabela (se ainda não estiver lá)
+  if (table.firstChild !== thead) {
+    table.insertBefore(thead, table.firstChild);
+  }
+
+    // Seleciona todas as linhas <tr> no corpo da tabela
+    let rows = document.querySelectorAll('tbody tr');
+  
+    // Adiciona as classes do Tailwind CSS às linhas da tabela
+    for (let i = 0; i < rows.length; i++) {
+      rows[i].classList.add('hover:bg-gray-200');
+      if (i % 2 === 0) {
+        rows[i].classList.add('even:bg-gray-50');
+      }
+      
+      // Seleciona todas as células <td> dentro da linha
+      let cells = rows[i].querySelectorAll('td');
+      
+      // Adiciona a classe 'border' a cada célula <td>
+      for (let j = 0; j < cells.length; j++) {
+        cells[j].classList.add('border', 'text-center');
+      }
+    }
+    
 }
 
+function LimparTabela() {
+  // encontra a tabela e o corpo da tabela
+  const table = document.getElementById('results-table');
+  const tbody = table.getElementsByTagName('tbody')[0];
 
-
-
+  // remove todas as linhas do corpo da tabela
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild);
+  }
+}
 
 function cidrToNetmask(netmask) {
   let mask = [0, 0, 0, 0];
@@ -82,6 +134,24 @@ function ipToBinary(ip) {
   return binario;
 }
 
+function ipToBinaryFormated(ip) {
+  // Separar os quatro octetos do endereço IP
+  var octetos = ip.split('.');
+
+  // Converter cada octeto para notação binária com 8 bits
+  var binario = '';
+  for (var i = 0; i < octetos.length; i++) {
+      var octetoBinario = parseInt(octetos[i], 10).toString(2);
+      while (octetoBinario.length < 8) {
+          octetoBinario = '0' + octetoBinario;
+      }
+      binario += octetoBinario;
+      if (i !== octetos.length - 1) { // adiciona ponto em todos os octetos menos no último
+          binario += '.';
+      }
+  }
+  return binario;
+}
 
 function calculateNetworkAddress(ip, prefixLength) {
   const ipArray = ip.split('.').map(Number);
@@ -94,6 +164,9 @@ function calculateNetworkAddress(ip, prefixLength) {
 }
 
 function calculateNumHosts(prefixLength) {
+  if (prefixLength === 32) {
+    return 0;
+  }
   const hosts = Math.pow(2, 32 - prefixLength) - 2;
   return hosts;
 }
@@ -125,6 +198,11 @@ function calculateMaxHost(ip, prefixLength) {
   const maxHost = binaryToIp(maxHostBinary);
   return maxHost;
 }
+
+document.getElementById("network-form").addEventListener("submit", function(event) {
+  event.preventDefault(); // interrompe o envio do formulário
+  Calcular(); // chama sua função desejada
+});
 
 let clipboard = new ClipboardJS('.btn');
 
